@@ -16,10 +16,10 @@ ErrorCode FileOpener::loadVector(std::vector<T>& outVector,
 		Logger::log("File " + filename + " could not be opened", ERROR);
 		return InvalidFile;
 	}
-	
+
 	// Read line after line.
 	T newValue;
-	outVector.empty();
+	outVector.clear();
 	while (std::getline(file, line))
 	{
 		if (transformValue(line, newValue) != Ok)
@@ -57,13 +57,12 @@ ErrorCode FileOpener::transformValue(const std::string& value, int& result)
 	{
 		result = std::stoi(value, nullptr, 10);
 	}
-	catch(const std::exception& e)
+	catch (const std::exception& e)
 	{
 		Logger::log("Could not transform string to integer", ERROR);
 		Logger::log(e.what(), ERROR);
 		return InternalInconsistency;
 	}
-	
-	// Add the new value to the provided vector.
+
 	return Ok;
 }

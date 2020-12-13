@@ -7,5 +7,7 @@ enum ErrorCode
 	MemoryError,
 	SizeMismatch,
 	InvalidFile,
-	InternalInconsistency,
+	InvalidArgument,
+	NoSolution,
+	InternalInconsistency
 };

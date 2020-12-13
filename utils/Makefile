@@ -1,8 +1,8 @@
 # Compiler and linker.
 CC=g++
 
-# Name of the executable.
-TARGET=libutils.so
+# Name of the shared library.
+TARGET=libaocutils.so
 
 # Compiler flags.
 CCFLAGS=-g -fPIC -Wall -std=c++17
@@ -10,14 +10,14 @@ CCFLAGS=-g -fPIC -Wall -std=c++17
 # List all the sources needed for this project.
 SOURCES=$(wildcard *.cpp)
 
-# List the objects needed for the project (all come
-# from the list in SOURCES).
+# List the objects needed (from SOURCES).
 OBJECTS=$(patsubst %.cpp,%.o,$(SOURCES))
 
 # List dependency files, one for each source file.
 DEPENDS=$(patsubst %.cpp,%.d,$(SOURCES))
 
-.PHONY: all clean install
+# List phony targets.
+.PHONY: all clean
 
 all: $(TARGET)
 

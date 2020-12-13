@@ -4,6 +4,11 @@
 
 void Logger::log(const std::string& message, LogLevel level)
 {
+	if (silentMode)
+	{
+		return;
+	}
+
 	std::string begin;
 	switch (level)
 	{
@@ -19,4 +24,9 @@ void Logger::log(const std::string& message, LogLevel level)
 	}
 
 	std::cout << begin + message << std::endl;
+}
+
+void Logger::setSilentMode(void)
+{
+	silentMode = true;
 }
