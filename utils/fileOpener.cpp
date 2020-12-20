@@ -43,6 +43,9 @@ template ErrorCode FileOpener::loadVector(std::vector<std::string>& outVector,
 // int
 template ErrorCode FileOpener::loadVector(std::vector<int>& outVector,
 	const std::string& filename, const bool isColumn);
+// unsigned long
+template ErrorCode FileOpener::loadVector(std::vector<unsigned long>& outVector,
+	const std::string& filename, const bool isColumn);
 
 ErrorCode FileOpener::transformValue(const std::string& value, std::string& result)
 {
@@ -60,6 +63,24 @@ ErrorCode FileOpener::transformValue(const std::string& value, int& result)
 	catch (const std::exception& e)
 	{
 		Logger::log("Could not transform string to integer", ERROR);
+		Logger::log(e.what(), ERROR);
+		return InternalInconsistency;
+	}
+
+	return Ok;
+}
+
+ErrorCode FileOpener::transformValue(const std::string& value,
+	unsigned long& result)
+{
+	// Try to convert the current line to an unsigned long.
+	try
+	{
+		result = std::stoul(value, nullptr, 10);
+	}
+	catch (const std::exception& e)
+	{
+		Logger::log("Could not transform string to unsigned long", ERROR);
 		Logger::log(e.what(), ERROR);
 		return InternalInconsistency;
 	}

@@ -1,4 +1,3 @@
-
 #include "day01.hpp"
 
 int main(void)

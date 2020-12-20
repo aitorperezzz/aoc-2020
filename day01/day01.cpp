@@ -23,7 +23,7 @@ ErrorCode Day01::executePartOne(const std::string& filename, int& result)
 				Logger::log("Two values have been found that sum 2020", INFO);
 				Logger::log("The product of both is " +
 					std::to_string(values[i] * values[j]), INFO);
-				result = values[i] + values[j];
+				result = values[i] * values[j];
 				return Ok;
 			}
 		}
@@ -57,7 +57,7 @@ ErrorCode Day01::executePartTwo(const std::string& filename, int& result)
 					Logger::log("Three values have been found that sum 2020", INFO);
 					Logger::log("The product of them is " +
 						std::to_string(values[i] * values[j] * values[k]), INFO);
-					result = values[i] + values[j] + values[k];
+					result = values[i] * values[j] * values[k];
 					return Ok;
 				}
 			}

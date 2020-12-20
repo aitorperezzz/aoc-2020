@@ -19,4 +19,6 @@ private:
 		std::string& result);
 	static ErrorCode transformValue(const std::string& value,
 		int& result);
+	static ErrorCode transformValue(const std::string& value,
+		unsigned long& result);
 };
