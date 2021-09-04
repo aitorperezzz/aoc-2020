@@ -2,8 +2,8 @@
 
 int main(void)
 {
-	int result1, result2;
-	if (Day10::execute("input/test.txt", result1, result2) != Ok)
+	unsigned long result1, result2;
+	if (Day10::execute("input/input.txt", result1, result2) != Ok)
 	{
 		return -1;
 	}

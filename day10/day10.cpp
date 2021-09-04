@@ -6,8 +6,8 @@
 #include "fileOpener.hpp"
 #include "logger.hpp"
 
-ErrorCode Day10::execute(const std::string& filename, int& result1,
-	int& result2)
+ErrorCode Day10::execute(const std::string &filename, unsigned long &result1,
+						 unsigned long &result2)
 {
 	// Open input file.
 	std::vector<int> values;
@@ -33,8 +33,8 @@ ErrorCode Day10::execute(const std::string& filename, int& result1,
 	}
 	Logger::log("Result for part one is: " + std::to_string(result1), INFO);
 
-	// Compute the reuslt of part two.
-	if (numArrangements(values, result2) != Ok)
+	// Compute the result of part two.
+	if (numCombinations(values, result2) != Ok)
 	{
 		Logger::log("Could not compute number of arrangements", ERROR);
 		return NoSolution;
@@ -43,10 +43,10 @@ ErrorCode Day10::execute(const std::string& filename, int& result1,
 	return Ok;
 }
 
-ErrorCode Day10::checkAndCount(const std::vector<int>& values,
-	int& result)
+ErrorCode Day10::checkAndCount(const std::vector<int> &values,
+							   unsigned long &result)
 {
-	int counter1 = 0, counter3 = 0;
+	unsigned long counter1 = 0, counter3 = 0;
 	for (auto it = values.begin(); it != values.end() - 1; it++)
 	{
 		if (*(it + 1) - *it > 3)
@@ -67,44 +67,41 @@ ErrorCode Day10::checkAndCount(const std::vector<int>& values,
 	return Ok;
 }
 
-ErrorCode Day10::numArrangements(const std::vector<int>& values,
-	int& result)
+ErrorCode Day10::numCombinations(const std::vector<int> &values,
+								 unsigned long &result)
 {
-	int count = 1;
+	unsigned long combinations = 1;
 	auto begin = values.begin(), current = values.begin();
 	while (current != values.end() - 1)
 	{
 		// If the distance to the next adapter is 3, we close the range.
 		if (*(current + 1) - *current == 3)
 		{
-			int inter = countFromTo(begin, current + 1);
-			count *= inter;
-			std::cout << "got inter value: " << inter << std::endl;
-			std::cout << "current global count: " << count << std::endl;
+			unsigned long intermediate = countFromTo(begin, current);
+			combinations *= intermediate;
 			begin = current + 1;
 		}
 		current++;
 	}
 
-	result = count;
+	result = combinations;
 	return Ok;
 }
 
 // Count all the possibilities in which begin
-// is always at the beginning of the combination.
-int Day10::countFromTo(const std::vector<int>::const_iterator& begin,
-	const std::vector<int>::const_iterator& end)
+// is the first number in the combination,
+// adn in which end is the end of the range (included).
+int Day10::countFromTo(const std::vector<int>::const_iterator &begin,
+					   const std::vector<int>::const_iterator &end)
 {
-	std::cout << "\nStarting count from " << *begin << " to " << *(end - 1) << std::endl;
-
-	// Nothing to do if we are at the end.
-	if (*begin + 3 == *end)
+	// Nothing to do if there is no range.
+	if (begin == end)
 	{
-		return 0;
+		return 1;
 	}
 
-	// First there is only one possibility.	
-	int count = 1;
+	// First there is only one possibility.
+	unsigned long count = 1;
 
 	// Skip until we can.
 	auto current = begin + 1;
@@ -116,10 +113,7 @@ int Day10::countFromTo(const std::vector<int>::const_iterator& begin,
 			// current, and then all the rest.
 			count += countFromTo(current, end);
 		}
-		std::cout << "Update current from " << *current << " to " << *(current + 1)	 << std::endl;
 		current++;
 	}
-	std::cout << "Count from " << *begin << " to " << *(end-1) << std::endl;
-	std::cout << count << std::endl;
 	return count;
 }
