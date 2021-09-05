@@ -126,8 +126,8 @@ int main(int argc, char *argv[])
         break;
     }
     case 11: {
-        unsigned int result;
-        if (Day11::execute("input/day11.txt", result) != Ok)
+        unsigned int result1, result2;
+        if (Day11::execute("input/day11.txt", result1, result2) != Ok)
         {
             return -1;
         }
