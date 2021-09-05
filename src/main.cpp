@@ -8,6 +8,7 @@
 #include "day08.hpp"
 #include "day09.hpp"
 #include "day10.hpp"
+#include "day11.hpp"
 #include "logger.hpp"
 
 int main(int argc, char *argv[])
@@ -119,6 +120,14 @@ int main(int argc, char *argv[])
     case 10: {
         unsigned long result1, result2;
         if (Day10::execute("input/day10.txt", result1, result2) != Ok)
+        {
+            return -1;
+        }
+        break;
+    }
+    case 11: {
+        unsigned int result;
+        if (Day11::execute("input/day11.txt", result) != Ok)
         {
             return -1;
         }
