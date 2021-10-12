@@ -2,31 +2,33 @@
 
 #include "logger.hpp"
 
-void Logger::log(const std::string& message, LogLevel level)
+bool Logger::silent = false;
+
+void Logger::log(const std::string &message, LogLevel level)
 {
-	if (silentMode)
-	{
-		return;
-	}
+    if (silent)
+    {
+        return;
+    }
 
-	std::string begin;
-	switch (level)
-	{
-		case INFO:
-			begin = "Info: ";
-			break;
-		case ERROR:
-			begin = "Error: ";
-			break;
-		case DEBUG:
-			begin = "Debug: ";
-			break;
-	}
+    std::string begin;
+    switch (level)
+    {
+    case INFO:
+        begin = "Info: ";
+        break;
+    case ERROR:
+        begin = "Error: ";
+        break;
+    case DEBUG:
+        begin = "Debug: ";
+        break;
+    }
 
-	std::cout << begin + message << std::endl;
+    std::cout << begin + message << std::endl;
 }
 
-void Logger::setSilentMode(void)
+void Logger::setSilentMode(const bool inSilent)
 {
-	silentMode = true;
+    silent = inSilent;
 }

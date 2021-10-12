@@ -8,53 +8,51 @@
 class TestDay01 : public CppUnit::TestFixture
 {
     CPPUNIT_TEST_SUITE(TestDay01);
-    CPPUNIT_TEST(testTestFile);
-    CPPUNIT_TEST(testInputFile);
+    CPPUNIT_TEST(testFile);
+    CPPUNIT_TEST(inputFile);
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    void testTestFile(void);
-    void testInputFile(void);
+    void testFile(void);
+    void inputFile(void);
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TestDay01);
 
-void TestDay01::testTestFile(void)
+void TestDay01::testFile(void)
 {
-    Logger::setSilentMode();
+    Logger::setSilentMode(true);
 
-    // Test with the test file first.
     std::string filename = "input/day01_test.txt";
     int result;
     if (Day01::executePartOne(filename, result) != Ok)
     {
         CPPUNIT_ASSERT(false);
     }
-    CPPUNIT_ASSERT_EQUAL(result, 514579);
+    CPPUNIT_ASSERT_EQUAL(514579, result);
 
     if (Day01::executePartTwo(filename, result) != Ok)
     {
         CPPUNIT_ASSERT(false);
     }
-    CPPUNIT_ASSERT_EQUAL(result, 241861950);
+    CPPUNIT_ASSERT_EQUAL(241861950, result);
 }
 
-void TestDay01::testInputFile(void)
+void TestDay01::inputFile(void)
 {
-    Logger::setSilentMode();
+    Logger::setSilentMode(true);
 
-    // Now test the input file.
     std::string filename = "input/day01.txt";
     int result;
     if (Day01::executePartOne(filename, result) != Ok)
     {
         CPPUNIT_ASSERT(false);
     }
-    CPPUNIT_ASSERT_EQUAL(result, 482811);
+    CPPUNIT_ASSERT_EQUAL(482811, result);
 
     if (Day01::executePartTwo(filename, result) != Ok)
     {
         CPPUNIT_ASSERT(false);
     }
-    CPPUNIT_ASSERT_EQUAL(result, 193171814);
+    CPPUNIT_ASSERT_EQUAL(193171814, result);
 }

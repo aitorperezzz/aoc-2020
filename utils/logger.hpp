@@ -4,19 +4,18 @@
 
 enum LogLevel
 {
-	INFO,
-	ERROR,
-	DEBUG
+    INFO,
+    ERROR,
+    DEBUG
 };
 
-// If silent mode is on, calls to logger will not print
-// to the console. This mode is mainly for unit testing.
-inline bool silentMode = false;
-
+// Logger class
 class Logger
 {
+private:
+    static bool silent;
 
 public:
-	static void log(const std::string& message, LogLevel level);
-	static void setSilentMode(void);
+    static void log(const std::string &message, LogLevel level);
+    static void setSilentMode(const bool inSilent);
 };

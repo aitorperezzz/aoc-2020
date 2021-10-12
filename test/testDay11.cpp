@@ -8,20 +8,20 @@
 class TestDay11 : public CppUnit::TestFixture
 {
     CPPUNIT_TEST_SUITE(TestDay11);
-    CPPUNIT_TEST(testTestFile);
-    CPPUNIT_TEST(testInputFile);
+    CPPUNIT_TEST(testFile);
+    CPPUNIT_TEST(inputFile);
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    void testTestFile(void);
-    void testInputFile(void);
+    void testFile(void);
+    void inputFile(void);
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TestDay11);
 
-void TestDay11::testTestFile(void)
+void TestDay11::testFile(void)
 {
-    Logger::setSilentMode();
+    Logger::setSilentMode(true);
     std::string filename = "input/day11_test.txt";
     unsigned int result1, result2;
     if (Day11::execute(filename, result1, result2) != Ok)
@@ -32,9 +32,9 @@ void TestDay11::testTestFile(void)
     CPPUNIT_ASSERT_EQUAL(26U, result2);
 }
 
-void TestDay11::testInputFile(void)
+void TestDay11::inputFile(void)
 {
-    Logger::setSilentMode();
+    Logger::setSilentMode(true);
     std::string filename = "input/day11.txt";
     unsigned int result1, result2;
     if (Day11::execute(filename, result1, result2) != Ok)
