@@ -34,18 +34,38 @@ struct Instruction
 
 struct Ship
 {
-    int xpos;
-    int ypos;
-    int viewAngle;
+    int xpos = 0;
+    int ypos = 0;
+    int xdirection = 0;
+    int ydirection = 0;
+
+    Ship(const bool withWaypoint)
+    {
+        if (withWaypoint)
+        {
+            xdirection = 10;
+            ydirection = 1;
+        }
+        else
+        {
+            xdirection = 1;
+            ydirection = 0;
+        }
+    }
 
     // Apply provided instruction to the ship
     ErrorCode applyInstruction(const Instruction &instruction);
+
+    // Apply provided instruction to the ship
+    ErrorCode applyInstructionWithWaypoint(const Instruction &instruction);
 
     // Log ship status
     std::string log() const
     {
         return "Position: [" + std::to_string(xpos) + ", " +
-               std::to_string(ypos) + "], angle: " + std::to_string(viewAngle);
+               std::to_string(ypos) + "], Direction: [" +
+               std::to_string(xdirection) + ", " + std::to_string(ydirection) +
+               "]";
     }
 
     // Calculate Manhattan distance
@@ -55,6 +75,7 @@ struct Ship
     }
 };
 
-ErrorCode execute(const std::string &filename, uint32_t &result);
+ErrorCode execute(const std::string &filename, uint32_t &result1,
+                  uint32_t &result2);
 
 } // namespace day12

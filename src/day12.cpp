@@ -9,9 +9,48 @@
 namespace day12
 {
 
-std::vector<int> possibleViewValues = {0, 90, 180, 270};
+enum Direction
+{
+    Right,
+    Left
+};
 
-ErrorCode execute(const std::string &filename, uint32_t &result)
+int calculateNumRotations(const int completeAngle)
+{
+    if (completeAngle % 90 != 0)
+    {
+        throw std::out_of_range("Angle is not valid");
+    }
+    return completeAngle / 90;
+}
+
+ErrorCode rotateVector90degrees(int &x, int &y, const int numTimes,
+                                const Direction &direction)
+{
+    int auxx = x, auxy = y;
+    int tempx;
+    for (int i = 0; i < numTimes; i++)
+    {
+        if (direction == Left)
+        {
+            tempx = auxx;
+            auxx = -auxy;
+            auxy = tempx;
+        }
+        else
+        {
+            tempx = auxx;
+            auxx = auxy;
+            auxy = -tempx;
+        }
+    }
+    x = auxx;
+    y = auxy;
+    return Ok;
+}
+
+ErrorCode execute(const std::string &filename, uint32_t &result1,
+                  uint32_t &result2)
 {
     // Load input file.
     std::vector<std::string> aux;
@@ -30,35 +69,43 @@ ErrorCode execute(const std::string &filename, uint32_t &result)
                                   atoi(instructionString.c_str() + 1));
     }
 
-    // Create a ship in an initial state
-    Ship ship;
-    ship.viewAngle = 0;
-    ship.xpos = 0;
-    ship.ypos = 0;
+    // Create a ship and a waypoint ship in their initial states
+    Ship ship(false);
+    Ship waypointShip(true);
 
-    // Apply instructions
+    // Apply instructions to both ships
     for (const Instruction &instruction : instructions)
     {
         if (ship.applyInstruction(instruction) != Ok)
         {
-            Logger::log("Could not apply instruction:", ERROR);
+            Logger::log("Could not apply instruction to ship:", ERROR);
+            Logger::log(instruction.log(), ERROR);
+            return ErrorCode::InternalInconsistency;
+        }
+        if (waypointShip.applyInstructionWithWaypoint(instruction) != Ok)
+        {
+            Logger::log("Could not apply instruction to waypoint ship:", ERROR);
             Logger::log(instruction.log(), ERROR);
             return ErrorCode::InternalInconsistency;
         }
     }
 
     // Get the final Manhattan distance and print it
-    uint32_t distance = ship.getManhattanDistance();
+    uint32_t distance1 = ship.getManhattanDistance();
+    uint32_t distance2 = waypointShip.getManhattanDistance();
     Logger::log("Final Manhattan distance of the ship is: " +
-                    std::to_string(distance),
+                    std::to_string(distance1),
                 INFO);
-    result = distance;
+    Logger::log("Final Manhattan distance of the waypoint ship is: " +
+                    std::to_string(distance2),
+                INFO);
+    result1 = distance1;
+    result2 = distance2;
     return Ok;
 }
 
 ErrorCode Ship::applyInstruction(const Instruction &instruction)
 {
-    // Decide depending on the instruction action
     if (instruction.action == 'N')
     {
         ypos += instruction.value;
@@ -77,56 +124,52 @@ ErrorCode Ship::applyInstruction(const Instruction &instruction)
     }
     else if (instruction.action == 'L')
     {
-        viewAngle = ((viewAngle + instruction.value) % 360 + 360) % 360;
-        if (std::find(possibleViewValues.begin(), possibleViewValues.end(),
-                      viewAngle) == possibleViewValues.end())
-        {
-            Logger::log("View angles does not contain a good value" +
-                            std::to_string(viewAngle),
-                        ERROR);
-            return InternalInconsistency;
-        }
+        rotateVector90degrees(xdirection, ydirection,
+                              calculateNumRotations(instruction.value), Left);
     }
     else if (instruction.action == 'R')
     {
-        viewAngle = ((viewAngle - instruction.value) % 360 + 360) % 360;
-        if (std::find(possibleViewValues.begin(), possibleViewValues.end(),
-                      viewAngle) == possibleViewValues.end())
-        {
-            Logger::log("View angles does not contain a good value : " +
-                            std::to_string(viewAngle),
-                        ERROR);
-            return InternalInconsistency;
-        }
+        rotateVector90degrees(xdirection, ydirection,
+                              calculateNumRotations(instruction.value), Right);
     }
     else if (instruction.action == 'F')
     {
-        if (viewAngle == 0)
+        for (int t = 0; t < instruction.value; t++)
         {
-            applyInstruction(Instruction('E', instruction.value));
-        }
-        else if (viewAngle == 90)
-        {
-            applyInstruction(Instruction('N', instruction.value));
-        }
-        else if (viewAngle == 180)
-        {
-            applyInstruction(Instruction('W', instruction.value));
-        }
-        else if (viewAngle == 270)
-        {
-            applyInstruction(Instruction('S', instruction.value));
-        }
-        else
-        {
-            Logger::log("View angle value not valid", ERROR);
-            return InternalInconsistency;
+            xpos += xdirection;
+            ypos += ydirection;
         }
     }
     else
     {
         Logger::log("Instruction action not recognised", ERROR);
         return InternalInconsistency;
+    }
+
+    return Ok;
+}
+
+ErrorCode Ship::applyInstructionWithWaypoint(const Instruction &instruction)
+{
+    if (instruction.action == 'N')
+    {
+        ydirection += instruction.value;
+    }
+    else if (instruction.action == 'S')
+    {
+        ydirection -= instruction.value;
+    }
+    else if (instruction.action == 'E')
+    {
+        xdirection += instruction.value;
+    }
+    else if (instruction.action == 'W')
+    {
+        xdirection -= instruction.value;
+    }
+    else
+    {
+        applyInstruction(instruction);
     }
 
     return Ok;

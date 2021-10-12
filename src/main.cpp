@@ -135,8 +135,8 @@ int main(int argc, char *argv[])
         break;
     }
     case 12: {
-        uint32_t result;
-        if (day12::execute("input/day12.txt", result) != Ok)
+        uint32_t result1, result2;
+        if (day12::execute("input/day12.txt", result1, result2) != Ok)
         {
             return -1;
         }
