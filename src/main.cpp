@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
             Logger::log("Argument provided does not look like an integer: " +
                             argumentString,
                         ERROR);
+            return -1;
         }
     }
     int day = atoi(argv[1]);
@@ -144,8 +145,9 @@ int main(int argc, char *argv[])
         break;
     }
     case 13: {
-        int result;
-        if (day13::execute("input/day13.txt", result) != Ok)
+        int result1;
+        int64_t result2;
+        if (day13::execute("input/day13.txt", result1, result2) != Ok)
         {
             return -1;
         }

@@ -9,6 +9,13 @@
 namespace day13
 {
 
+/// @brief Identifies the part of the problem we are solving
+enum Part
+{
+    ONE,
+    TWO
+};
+
 /// @brief Gathers all the information needed for the problem
 struct Problem
 {
@@ -16,7 +23,7 @@ struct Problem
     std::vector<int> busIds;
 
     /// @brief Constructor. Throws exceptions
-    Problem(const std::vector<std::string> &lines);
+    Problem(const std::vector<std::string> &lines, const Part part);
 
     /// @brief Computes the product of the id of the bus I have to get
     /// times the waiting time (difference between the time the bus leaves
@@ -25,6 +32,20 @@ struct Problem
 };
 
 /// @brief Returns the results for the day
-ErrorCode execute(const std::string &filename, int &result);
+ErrorCode execute(const std::string &filename, int &result1, int64_t &result2);
+
+/// @brief Solves the Chinese remainder theorem given as a set of equations:
+/// x = results[0] mod divisors[0]
+/// ...
+/// x = results[n] mod divisors[n]
+/// @param[in] results Set of all the values to the left of the equal sign
+/// @param[in] divisors Set of all the values after the mod sign
+int64_t solveChineseTheorem(const std::vector<int64_t> &results,
+                            const std::vector<int64_t> &divisors);
+
+/// @brief Receives the bus ids (with -1 instead of x) and returns the first
+/// (positive) timestamp such that the buses leave at the order they are
+/// programmed
+int64_t solvePartTwo(const std::vector<int> &busIds);
 
 } // namespace day13

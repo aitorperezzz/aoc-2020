@@ -1,4 +1,5 @@
 #include <exception>
+#include <numeric>
 
 #include "day13.hpp"
 #include "fileOpener.hpp"
@@ -7,7 +8,7 @@
 namespace day13
 {
 
-Problem::Problem(const std::vector<std::string> &lines)
+Problem::Problem(const std::vector<std::string> &lines, const Part part)
 {
     // Input file needs to have two lines only
     if (lines.size() != 2)
@@ -36,8 +37,11 @@ Problem::Problem(const std::vector<std::string> &lines)
         std::string innerString = busList.substr(0, pos);
         if (innerString != "x")
         {
-            int id = std::stoi(innerString);
-            busIds.push_back(id);
+            busIds.push_back(std::stoi(innerString));
+        }
+        else if (part == TWO)
+        {
+            busIds.push_back(-1);
         }
 
         // If this is the end, just break out of the loop
@@ -67,7 +71,7 @@ int Problem::computeEarliestBusTimesWaitTime()
     }
 }
 
-ErrorCode execute(const std::string &filename, int &result)
+ErrorCode execute(const std::string &filename, int &result1, int64_t &result2)
 {
     // Load input
     std::vector<std::string> lines;
@@ -77,13 +81,86 @@ ErrorCode execute(const std::string &filename, int &result)
         return InvalidFile;
     }
 
-    // Parse input
-    Problem problem(lines);
+    // Solve part one
+    Problem problem(lines, ONE);
+    result1 = problem.computeEarliestBusTimesWaitTime();
+    Logger::log("Result of part one: " + std::to_string(result1), INFO);
 
-    // Compute the earliest bus
-    result = problem.computeEarliestBusTimesWaitTime();
-    Logger::log("Result of part one: " + std::to_string(result), INFO);
+    // Solve part two
+    Problem problem2(lines, TWO);
+    result2 = solvePartTwo(problem2.busIds);
+    Logger::log("Minimal timestamp for part two: " + std::to_string(result2),
+                INFO);
+
     return ErrorCode::Ok;
+}
+
+int64_t multiplicativeInverse(const int64_t a, const int64_t n)
+{
+    int64_t t = 0, newt = 1;
+    int64_t r = n, newr = a;
+
+    int64_t quotient, auxt, auxr;
+    while (newr != 0)
+    {
+        quotient = r / newr;
+        auxt = newt;
+        newt = t - quotient * newt;
+        t = auxt;
+        auxr = newr;
+        newr = r - quotient * newr;
+        r = auxr;
+    }
+
+    if (r > 1)
+    {
+        throw std::logic_error("Number does not have inverse");
+    }
+    if (t < 0)
+    {
+        t = t + n;
+    }
+    return t;
+}
+
+int64_t solveChineseTheorem(const std::vector<int64_t> &results,
+                            const std::vector<int64_t> &divisors)
+{
+    // Compute the product of all divisors as an auxiliary variable
+    int64_t Nproduct =
+        std::accumulate(divisors.cbegin(), divisors.cend(),
+                        static_cast<int64_t>(1), std::multiplies<int64_t>());
+
+    // Compute the multiplicative modular inverses of each of the equations, and
+    // add to the solution
+    int64_t solution = 0;
+    int64_t ni;
+    for (size_t i = 0; i < divisors.size(); i++)
+    {
+        ni = Nproduct / divisors[i];
+        solution += results[i] * multiplicativeInverse(ni, divisors[i]) * ni;
+    }
+
+    // Returning the smallest positive possible solution
+    return (solution % Nproduct + Nproduct) % Nproduct;
+}
+
+int64_t solvePartTwo(const std::vector<int> &busIds)
+{
+    // Grab all the well defined bus ids and keep the "results" that will serve
+    // the chinese theorem, on the fly. Convert to bigger integers
+    std::vector<int64_t> fixedResults;
+    std::vector<int64_t> fixedDivisors;
+    for (size_t i = 0; i < busIds.size(); i++)
+    {
+        if (busIds[i] != -1)
+        {
+            fixedResults.push_back(static_cast<int64_t>(0 - i));
+            fixedDivisors.push_back(static_cast<int64_t>(busIds[i]));
+        }
+    }
+
+    return solveChineseTheorem(fixedResults, fixedDivisors);
 }
 
 } // namespace day13
