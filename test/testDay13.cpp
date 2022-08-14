@@ -29,10 +29,7 @@ void TestDay13::testFile(void)
     std::string filename = "input/day13_test.txt";
     int result1;
     int64_t result2;
-    if (day13::execute(filename, result1, result2) != Ok)
-    {
-        CPPUNIT_ASSERT(false);
-    }
+    CPPUNIT_ASSERT_EQUAL(Ok, day13::execute(filename, result1, result2));
     CPPUNIT_ASSERT_EQUAL(295, result1);
     CPPUNIT_ASSERT_EQUAL(static_cast<int64_t>(1068781), result2);
 }
@@ -43,10 +40,7 @@ void TestDay13::inputFile(void)
     std::string filename = "input/day13.txt";
     int result1;
     int64_t result2;
-    if (day13::execute(filename, result1, result2) != Ok)
-    {
-        CPPUNIT_ASSERT(false);
-    }
+    CPPUNIT_ASSERT_EQUAL(Ok, day13::execute(filename, result1, result2));
     CPPUNIT_ASSERT_EQUAL(246, result1);
     CPPUNIT_ASSERT_EQUAL(static_cast<int64_t>(939490236001473), result2);
 }
