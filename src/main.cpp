@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
     }
     case 11: {
         unsigned int result1, result2;
-        if (Day11::execute("input/day11.txt", result1, result2) != Ok)
+        if (day11::execute("input/day11.txt", result1, result2) != Ok)
         {
             return -1;
         }

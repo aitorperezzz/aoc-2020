@@ -24,10 +24,7 @@ void TestDay11::testFile(void)
     Logger::setSilentMode(true);
     std::string filename = "input/day11_test.txt";
     unsigned int result1, result2;
-    if (Day11::execute(filename, result1, result2) != Ok)
-    {
-        CPPUNIT_ASSERT(false);
-    }
+    CPPUNIT_ASSERT_EQUAL(Ok, day11::execute(filename, result1, result2));
     CPPUNIT_ASSERT_EQUAL(37U, result1);
     CPPUNIT_ASSERT_EQUAL(26U, result2);
 }
@@ -37,10 +34,7 @@ void TestDay11::inputFile(void)
     Logger::setSilentMode(true);
     std::string filename = "input/day11.txt";
     unsigned int result1, result2;
-    if (Day11::execute(filename, result1, result2) != Ok)
-    {
-        CPPUNIT_ASSERT(false);
-    }
+    CPPUNIT_ASSERT_EQUAL(Ok, day11::execute(filename, result1, result2));
     CPPUNIT_ASSERT_EQUAL(2281U, result1);
     CPPUNIT_ASSERT_EQUAL(2085U, result2);
 }

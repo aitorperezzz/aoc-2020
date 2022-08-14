@@ -4,14 +4,17 @@
 #include "fileOpener.hpp"
 #include "logger.hpp"
 
+namespace day11
+{
+
 // Checks if an index is valid for a certain size
 bool validIndex(const size_t index, const size_t size)
 {
     return index >= 0 && index <= (size - 1);
 }
 
-ErrorCode Day11::execute(const std::string &filename, unsigned int &result1,
-                         unsigned int &result2)
+ErrorCode execute(const std::string &filename, unsigned int &result1,
+                  unsigned int &result2)
 {
     // Load input file.
     std::vector<std::string> auxLayout;
@@ -76,9 +79,8 @@ ErrorCode Day11::execute(const std::string &filename, unsigned int &result1,
     return Ok;
 }
 
-bool Day11::applyRules(const size_t part,
-                       std::vector<std::vector<State>> &layout,
-                       size_t &totalOccupied)
+bool applyRules(const size_t part, std::vector<std::vector<State>> &layout,
+                size_t &totalOccupied)
 {
     const size_t ni = layout.size();
     const size_t nj = layout[0].size();
@@ -134,9 +136,8 @@ bool Day11::applyRules(const size_t part,
     return hasChanged;
 }
 
-size_t Day11::countAdjacentOccupied(
-    const std::vector<std::vector<State>> &layout, const int icenter,
-    const int jcenter)
+size_t countAdjacentOccupied(const std::vector<std::vector<State>> &layout,
+                             const int icenter, const int jcenter)
 {
     size_t count = 0;
     const size_t numRows = layout.size(), numCols = layout[0].size();
@@ -165,8 +166,8 @@ size_t Day11::countAdjacentOccupied(
     return count;
 }
 
-size_t Day11::countLinedOccupied(const std::vector<std::vector<State>> &layout,
-                                 const int icenter, const int jcenter)
+size_t countLinedOccupied(const std::vector<std::vector<State>> &layout,
+                          const int icenter, const int jcenter)
 {
     size_t count = 0;
     const size_t numRows = layout.size(), numCols = layout[0].size();
@@ -214,3 +215,5 @@ size_t Day11::countLinedOccupied(const std::vector<std::vector<State>> &layout,
 
     return count;
 }
+
+} // namespace day11
