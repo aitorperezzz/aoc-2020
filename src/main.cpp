@@ -11,6 +11,11 @@
 #include "day11.hpp"
 #include "day12.hpp"
 #include "day13.hpp"
+#include "day14.hpp"
+#include "day15.hpp"
+#include "day16.hpp"
+#include "day17.hpp"
+#include "day18.hpp"
 #include "logger.hpp"
 
 int main(int argc, char *argv[])
@@ -148,6 +153,54 @@ int main(int argc, char *argv[])
         int result1;
         int64_t result2;
         if (day13::execute("input/day13.txt", result1, result2) != Ok)
+        {
+            return -1;
+        }
+        break;
+    }
+    case 14: {
+        uint64_t result;
+        if (day14::execute("input/day14.txt", day14::Version::ONE, result) !=
+            Ok)
+        {
+            return -1;
+        }
+        if (day14::execute("input/day14.txt", day14::Version::TWO, result) !=
+            Ok)
+        {
+            return -1;
+        }
+        break;
+    }
+    case 15: {
+        const int iterations = 30000000;
+        int result;
+        std::vector<int> startingNumbers = {14, 8, 16, 0, 1, 17};
+        if (day15::execute(startingNumbers, iterations, result) != Ok)
+        {
+            return -1;
+        }
+        break;
+    }
+    case 16: {
+        int result;
+        if (day16::execute("input/day16.txt", result) != Ok)
+        {
+            return -1;
+        }
+        break;
+    }
+    case 17: {
+        int result1, result2;
+        if (day17::execute("input/day17.txt", result1, result2) != Ok)
+        {
+            return -1;
+        }
+        break;
+    }
+    case 18: {
+        int64_t result1, result2;
+        if (day18::execute("input/day18.txt", result1, result2) != Ok)
         {
             return -1;
         }
