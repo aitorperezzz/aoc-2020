@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
     }
     case 7: {
         int result1, result2;
-        if (Day07::execute("./input/day07.txt", result1, result2) != Ok)
+        if (day07::execute("./input/day07.txt", result1, result2) != Ok)
         {
             return -1;
         }
@@ -183,8 +183,9 @@ int main(int argc, char *argv[])
         break;
     }
     case 16: {
-        int result;
-        if (day16::execute("input/day16.txt", result) != Ok)
+        int errorRate;
+        int64_t finalProduct;
+        if (day16::execute("input/day16.txt", errorRate, finalProduct) != Ok)
         {
             return -1;
         }
