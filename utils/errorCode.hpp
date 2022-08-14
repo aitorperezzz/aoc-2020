@@ -2,12 +2,12 @@
 
 enum ErrorCode
 {
-	Ok,
-	Error,
-	MemoryError,
-	SizeMismatch,
-	InvalidFile,
-	InvalidArgument,
-	NoSolution,
-	InternalInconsistency
+    Ok,
+    Error,
+    MemoryError,
+    SizeMismatch,
+    InvalidFile,
+    InvalidArgument,
+    NoSolution,
+    InternalInconsistency
 };
