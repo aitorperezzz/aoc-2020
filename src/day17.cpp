@@ -9,127 +9,150 @@
 namespace day17
 {
 
-struct Coords3D
-{
-    Coords3D(const int inX, const int inY, const int inZ)
-    {
-        x = inX;
-        y = inY;
-        z = inZ;
-    }
-
-    int x;
-    int y;
-    int z;
-};
-
-struct Coords4D
-{
-    Coords4D(const int inx, const int iny, const int inz, const int inw)
-    {
-        x = inx;
-        y = iny;
-        z = inz;
-        w = inw;
-    }
-
-    int x;
-    int y;
-    int z;
-    int w;
-};
-
 struct Boundary
 {
     int min;
     int max;
 };
 
-struct Boundaries3D
-{
-    Boundary x;
-    Boundary y;
-    Boundary z;
-};
+template <size_t n> using Coordinates = std::array<int, n>;
+template <size_t n> using Boundaries = std::array<Boundary, n>;
 
-struct Boundaries4D
+// Update to the next coordinate value within the provided boundaries.
+// Return true if the boundaries have not been reached
+template <size_t n>
+bool updateCoordinates(const Boundaries<n> &boundaries,
+                       Coordinates<n> &coordinates)
 {
-    Boundary x;
-    Boundary y;
-    Boundary z;
-    Boundary w;
-};
-
-std::vector<Coords3D> performIteration3D(const std::vector<Coords3D> &original,
-                                         Boundaries3D &boundaries)
-{
-    std::vector<Coords3D> result;
-    for (int x = boundaries.x.min - 1; x <= boundaries.x.max + 1; x++)
+    // Find the dimension that still has not reached the max value
+    int dimension = n - 1;
+    while (coordinates[dimension] == boundaries[dimension].max + 1 &&
+           dimension >= 0)
     {
-        for (int y = boundaries.y.min - 1; y <= boundaries.y.max + 1; y++)
-        {
-            for (int z = boundaries.z.min - 1; z <= boundaries.z.max + 1; z++)
-            {
-                // Go through the neighbors of the current cube and count the
-                // active ones. In parallel, try to find myself
-                int active = 0;
-                bool myselfActive = false;
-                for (const auto &coord : original)
-                {
-                    // Check if this cube is me
-                    if (coord.x == x && coord.y == y && coord.z == z)
-                    {
-                        // I am active, and no need to continue checking
-                        myselfActive = true;
-                        continue;
-                    }
-
-                    const bool xneighbor = x - 1 <= coord.x && coord.x <= x + 1;
-                    const bool yneighbor = y - 1 <= coord.y && coord.y <= y + 1;
-                    const bool zneighbor = z - 1 <= coord.z && coord.z <= z + 1;
-                    if (xneighbor && yneighbor && zneighbor)
-                    {
-                        // There is an active neighbor, so add 1 to the number
-                        // of active neighbors
-                        active++;
-                    }
-                }
-
-                // Decide depending on the number of active neighbors
-                if (myselfActive)
-                {
-                    if (active == 2 || active == 3)
-                    {
-                        // I remain active in the next iteration
-                        result.push_back(Coords3D(x, y, z));
-                    }
-                }
-                else
-                {
-                    if (active == 3)
-                    {
-                        result.push_back(Coords3D(x, y, z));
-                    }
-                }
-            }
-        }
+        dimension--;
     }
 
-    // Update boundaries
-    boundaries.x.min--;
-    boundaries.y.min--;
-    boundaries.z.min--;
-    boundaries.x.max++;
-    boundaries.y.max++;
-    boundaries.z.max++;
+    // If the dimension that has not reached the max value is in the middle,
+    // update it and bring the rest of dimensions to the right to the min value
+    // allowed by the boundaries
+    bool result = false;
+    if (dimension >= 0)
+    {
+        coordinates[dimension]++;
+        for (size_t nextDimension = dimension + 1; nextDimension < n;
+             nextDimension++)
+        {
+            coordinates[nextDimension] = boundaries[dimension].min - 1;
+        }
+        result = true;
+    }
 
     return result;
 }
 
-int solve3DProblem(const std::vector<std::string> &input)
+// Provide the minimal coordinates inside the boundaries
+template <size_t n>
+Coordinates<n> getFirstCoordinates(const Boundaries<n> &boundaries)
+{
+    Coordinates<n> coordinates;
+    for (size_t i = 0; i < n; i++)
+    {
+        coordinates[i] = boundaries[i].min - 1;
+    }
+    return coordinates;
+}
+
+// Provided a 2 dimensional initial shape, set initial boundaries
+template <size_t n>
+Boundaries<n> setInitialBoundaries(const std::array<size_t, 2> &shape2d)
+{
+    Boundaries<n> boundaries;
+    for (size_t i = 0; i < n; i++)
+    {
+        boundaries[i].min = 0;
+        boundaries[i].max = 0;
+        if (i == 0 || i == 1)
+        {
+            boundaries[i].max = shape2d[i] - 1;
+        }
+    }
+    return boundaries;
+}
+
+// Perform one iteration of the conway algorithm. The algorithm updates the
+// boundaries for the next iteration
+template <size_t n>
+std::vector<Coordinates<n>> performIteration(
+    const std::vector<Coordinates<n>> &activeCubes, Boundaries<n> &boundaries)
+{
+    std::vector<Coordinates<n>> result;
+
+    // Get the first coordinates (minimal values allowed)
+    auto coordinates = getFirstCoordinates(boundaries);
+    int active;
+    bool myselfActive;
+    bool equal, neighbors;
+    do
+    {
+        active = 0; // number of active cubes around the current coordinate
+        myselfActive = false; // if this coordinate is an active cube
+
+        // Loop over all the active cubes
+        for (const auto &cube : activeCubes)
+        {
+            equal = true;
+            neighbors = true;
+            for (size_t i = 0; i < n; i++)
+            {
+                equal = equal && cube[i] == coordinates[i];
+                neighbors = neighbors && coordinates[i] - 1 <= cube[i] &&
+                            cube[i] <= coordinates[i] + 1;
+            }
+            if (equal)
+            {
+                myselfActive = true;
+                continue;
+            }
+            if (neighbors)
+            {
+                active++;
+            }
+        }
+
+        // If I am active and have 2 or 3 active neighbors, I remain active
+        if (myselfActive)
+        {
+            if (active == 2 || active == 3)
+            {
+                result.push_back(coordinates);
+            }
+        }
+        // If I am not active but have 3 active neighbors, I become active
+        else
+        {
+            if (active == 3)
+            {
+                result.push_back(coordinates);
+            }
+        }
+
+    } while (updateCoordinates(boundaries, coordinates));
+
+    // Update boundaries for the next iteration
+    for (size_t i = 0; i < n; i++)
+    {
+        boundaries[i].min--;
+        boundaries[i].max++;
+    }
+
+    return result;
+}
+
+// Solve the problem, for a specific dimension, provided an initial input
+template <size_t n> size_t solveProblem(const std::vector<std::string> &input)
 {
     // Parse the input lines
-    std::vector<Coords3D> activeCubes;
+    std::vector<Coordinates<n>> activeCubes;
     for (size_t line = 0; line < input.size(); line++)
     {
         for (size_t i = 0; i < input[line].length(); i++)
@@ -137,156 +160,33 @@ int solve3DProblem(const std::vector<std::string> &input)
             if (input[line][i] == '#')
             {
                 // The cube is active
-                activeCubes.push_back(Coords3D(line, i, 0));
+                activeCubes.push_back(Coordinates<n>(
+                    {static_cast<int>(line), static_cast<int>(i)}));
             }
         }
     }
 
-    // Set the initial conditions, which reflect the boundaries
-    Boundaries3D boundaries;
-    boundaries.x.min = 0;
-    boundaries.x.max = static_cast<int>(input.size()) - 1;
-    boundaries.y.min = 0;
-    boundaries.y.max = static_cast<int>(input[0].length()) - 1;
-    boundaries.z.min = 0;
-    boundaries.z.max = 0;
+    // Create the boundaries according to the size of the input
+    Boundaries<n> boundaries =
+        setInitialBoundaries<n>({input.size(), input[0].length()});
 
     // Iterate while requested
     const size_t numIterations = 6;
     size_t currentIteration = 0;
     while (currentIteration < numIterations)
     {
-        activeCubes = performIteration3D(activeCubes, boundaries);
+        activeCubes = performIteration(activeCubes, boundaries);
         currentIteration++;
     }
 
-    Logger::log("Number of active cubes (3D): " +
-                    std::to_string(activeCubes.size()),
+    Logger::log("Number of active cubes after 6 iterations (" +
+                    std::to_string(n) +
+                    "D): " + std::to_string(activeCubes.size()),
                 INFO);
-    return static_cast<int>(activeCubes.size());
+    return activeCubes.size();
 }
 
-std::vector<Coords4D> performIteration4D(const std::vector<Coords4D> &original,
-                                         Boundaries4D &boundaries)
-{
-    std::vector<Coords4D> result;
-    for (int x = boundaries.x.min - 1; x <= boundaries.x.max + 1; x++)
-    {
-        for (int y = boundaries.y.min - 1; y <= boundaries.y.max + 1; y++)
-        {
-            for (int z = boundaries.z.min - 1; z <= boundaries.z.max + 1; z++)
-            {
-                for (int w = boundaries.w.min - 1; w <= boundaries.w.max + 1;
-                     w++)
-                {
-                    // Go through the neighbors of the current cube and count
-                    // the active ones. In parallel, try to find myself
-                    int active = 0;
-                    bool myselfActive = false;
-                    for (const auto &coord : original)
-                    {
-                        // Check if this cube is me
-                        if (coord.x == x && coord.y == y && coord.z == z &&
-                            coord.w == w)
-                        {
-                            // I am active, and no need to continue checking
-                            myselfActive = true;
-                            continue;
-                        }
-
-                        const bool xneighbor =
-                            x - 1 <= coord.x && coord.x <= x + 1;
-                        const bool yneighbor =
-                            y - 1 <= coord.y && coord.y <= y + 1;
-                        const bool zneighbor =
-                            z - 1 <= coord.z && coord.z <= z + 1;
-                        const bool wneighbor =
-                            w - 1 <= coord.w && coord.w <= w + 1;
-                        if (xneighbor && yneighbor && zneighbor && wneighbor)
-                        {
-                            // There is an active neighbor, so add 1 to the
-                            // number of active neighbors
-                            active++;
-                        }
-                    }
-
-                    // Decide depending on the number of active neighbors
-                    if (myselfActive)
-                    {
-                        if (active == 2 || active == 3)
-                        {
-                            // I remain active in the next iteration
-                            result.push_back(Coords4D(x, y, z, w));
-                        }
-                    }
-                    else
-                    {
-                        if (active == 3)
-                        {
-                            result.push_back(Coords4D(x, y, z, w));
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // Update boundaries
-    boundaries.x.min--;
-    boundaries.y.min--;
-    boundaries.z.min--;
-    boundaries.w.min--;
-    boundaries.x.max++;
-    boundaries.y.max++;
-    boundaries.z.max++;
-    boundaries.w.max++;
-
-    return result;
-}
-
-int solve4DProblem(const std::vector<std::string> &input)
-{
-    // Parse the input lines
-    std::vector<Coords4D> activeCubes;
-    for (size_t line = 0; line < input.size(); line++)
-    {
-        for (size_t i = 0; i < input[line].length(); i++)
-        {
-            if (input[line][i] == '#')
-            {
-                // The cube is active
-                activeCubes.push_back(Coords4D(line, i, 0, 0));
-            }
-        }
-    }
-
-    // Set the initial conditions, which reflect the boundaries
-    Boundaries4D boundaries;
-    boundaries.x.min = 0;
-    boundaries.x.max = static_cast<int>(input.size()) - 1;
-    boundaries.y.min = 0;
-    boundaries.y.max = static_cast<int>(input[0].length()) - 1;
-    boundaries.z.min = 0;
-    boundaries.z.max = 0;
-    boundaries.w.min = 0;
-    boundaries.w.max = 0;
-
-    // Iterate while requested
-    const size_t numIterations = 6;
-    size_t currentIteration = 0;
-    while (currentIteration < numIterations)
-    {
-        activeCubes = performIteration4D(activeCubes, boundaries);
-        currentIteration++;
-    }
-
-    Logger::log("Number of active cubes (4D): " +
-                    std::to_string(activeCubes.size()),
-                INFO);
-    return static_cast<int>(activeCubes.size());
-}
-
-ErrorCode execute(const std::string &filename, int &result1, int &result2)
+ErrorCode execute(const std::string &filename, size_t &result1, size_t &result2)
 {
     // Load input
     std::vector<std::string> input;
@@ -297,10 +197,10 @@ ErrorCode execute(const std::string &filename, int &result1, int &result2)
     }
 
     // Solve 3d problem
-    result1 = solve3DProblem(input);
+    result1 = solveProblem<3>(input);
 
     // Solve 4d problem
-    result2 = solve4DProblem(input);
+    result2 = solveProblem<4>(input);
 
     return ErrorCode::Ok;
 }

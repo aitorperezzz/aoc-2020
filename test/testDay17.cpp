@@ -22,17 +22,17 @@ CPPUNIT_TEST_SUITE_REGISTRATION(TestDay17);
 void TestDay17::testFile(void)
 {
     const std::string filename = "input/day17_test.txt";
-    int result1, result2;
+    size_t result1, result2;
     CPPUNIT_ASSERT_EQUAL(Ok, day17::execute(filename, result1, result2));
-    CPPUNIT_ASSERT_EQUAL(112, result1);
-    CPPUNIT_ASSERT_EQUAL(848, result2);
+    CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(112), result1);
+    CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(848), result2);
 }
 
 void TestDay17::inputFile(void)
 {
     const std::string filename = "input/day17.txt";
-    int result1, result2;
+    size_t result1, result2;
     CPPUNIT_ASSERT_EQUAL(Ok, day17::execute(filename, result1, result2));
-    CPPUNIT_ASSERT_EQUAL(346, result1);
-    CPPUNIT_ASSERT_EQUAL(1632, result2);
+    CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(346), result1);
+    CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1632), result2);
 }

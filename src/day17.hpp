@@ -8,6 +8,7 @@ namespace day17
 {
 
 /// @brief Returns the results for the day
-ErrorCode execute(const std::string &filename, int &result1, int &result2);
+ErrorCode execute(const std::string &filename, size_t &result1,
+                  size_t &result2);
 
 } // namespace day17

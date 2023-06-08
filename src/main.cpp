@@ -192,7 +192,7 @@ int main(int argc, char *argv[])
         break;
     }
     case 17: {
-        int result1, result2;
+        size_t result1, result2;
         if (day17::execute("input/day17.txt", result1, result2) != Ok)
         {
             return -1;
