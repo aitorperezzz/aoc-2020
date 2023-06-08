@@ -4,10 +4,9 @@
 
 #include "errorCode.hpp"
 
-class Day01
+namespace day01
 {
 
-public:
-	static ErrorCode executePartOne(const std::string& filename, int& result);
-	static ErrorCode executePartTwo(const std::string& filename, int& result);
-};
+ErrorCode executePartOne(const std::string &filename, int &result);
+ErrorCode executePartTwo(const std::string &filename, int &result);
+}; // namespace day01

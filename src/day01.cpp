@@ -2,7 +2,9 @@
 #include "fileOpener.hpp"
 #include "logger.hpp"
 
-ErrorCode Day01::executePartOne(const std::string &filename, int &result)
+namespace day01
+{
+ErrorCode executePartOne(const std::string &filename, int &result)
 {
     // Open the values in the text file into an int vector.
     std::vector<int> values;
@@ -35,7 +37,7 @@ ErrorCode Day01::executePartOne(const std::string &filename, int &result)
     return InternalInconsistency;
 }
 
-ErrorCode Day01::executePartTwo(const std::string &filename, int &result)
+ErrorCode executePartTwo(const std::string &filename, int &result)
 {
     // Open the values in the text file into an int vector.
     std::vector<int> values;
@@ -72,3 +74,4 @@ ErrorCode Day01::executePartTwo(const std::string &filename, int &result)
     Logger::log("No values have been found that sum 2020", ERROR);
     return InternalInconsistency;
 }
+} // namespace day01

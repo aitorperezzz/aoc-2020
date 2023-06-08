@@ -21,38 +21,20 @@ CPPUNIT_TEST_SUITE_REGISTRATION(TestDay01);
 
 void TestDay01::testFile(void)
 {
-    Logger::setSilentMode(true);
-
     std::string filename = "input/day01_test.txt";
     int result;
-    if (Day01::executePartOne(filename, result) != Ok)
-    {
-        CPPUNIT_ASSERT(false);
-    }
+    CPPUNIT_ASSERT_EQUAL(Ok, day01::executePartOne(filename, result));
     CPPUNIT_ASSERT_EQUAL(514579, result);
-
-    if (Day01::executePartTwo(filename, result) != Ok)
-    {
-        CPPUNIT_ASSERT(false);
-    }
+    CPPUNIT_ASSERT_EQUAL(Ok, day01::executePartTwo(filename, result));
     CPPUNIT_ASSERT_EQUAL(241861950, result);
 }
 
 void TestDay01::inputFile(void)
 {
-    Logger::setSilentMode(true);
-
     std::string filename = "input/day01.txt";
     int result;
-    if (Day01::executePartOne(filename, result) != Ok)
-    {
-        CPPUNIT_ASSERT(false);
-    }
+    CPPUNIT_ASSERT_EQUAL(Ok, day01::executePartOne(filename, result));
     CPPUNIT_ASSERT_EQUAL(482811, result);
-
-    if (Day01::executePartTwo(filename, result) != Ok)
-    {
-        CPPUNIT_ASSERT(false);
-    }
+    CPPUNIT_ASSERT_EQUAL(Ok, day01::executePartTwo(filename, result));
     CPPUNIT_ASSERT_EQUAL(193171814, result);
 }

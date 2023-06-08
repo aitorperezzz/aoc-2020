@@ -25,7 +25,6 @@ CPPUNIT_TEST_SUITE_REGISTRATION(TestDay13);
 
 void TestDay13::testFile(void)
 {
-    Logger::setSilentMode(true);
     std::string filename = "input/day13_test.txt";
     int result1;
     int64_t result2;
@@ -36,7 +35,6 @@ void TestDay13::testFile(void)
 
 void TestDay13::inputFile(void)
 {
-    Logger::setSilentMode(true);
     std::string filename = "input/day13.txt";
     int result1;
     int64_t result2;
@@ -47,7 +45,6 @@ void TestDay13::inputFile(void)
 
 void TestDay13::chineseTheorem(void)
 {
-    Logger::setSilentMode(true);
     std::vector<int64_t> results;
     std::vector<int64_t> divisors;
 
@@ -66,7 +63,6 @@ void TestDay13::chineseTheorem(void)
 
 void TestDay13::solveSecondPart(void)
 {
-    Logger::setSilentMode(true);
     std::vector<int> busIds;
 
     // Chain 67,7,59,61

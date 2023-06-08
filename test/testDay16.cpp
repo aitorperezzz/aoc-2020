@@ -23,7 +23,6 @@ CPPUNIT_TEST_SUITE_REGISTRATION(TestDay16);
 
 void TestDay16::testErrorRate(void)
 {
-    Logger::setSilentMode(true);
     const std::string filename = "input/day16_test.txt";
     auto document = day16::Document(filename);
     int errorRate = document.getScanningErrorRate(true);
@@ -32,7 +31,6 @@ void TestDay16::testErrorRate(void)
 
 void TestDay16::testCorrectOrder(void)
 {
-    Logger::setSilentMode(true);
     const std::string filename = "input/day16_test2.txt";
     auto document = day16::Document(filename);
     auto correctOrder = document.extractCorrectOrder();
@@ -46,7 +44,6 @@ void TestDay16::testCorrectOrder(void)
 
 void TestDay16::testInput(void)
 {
-    Logger::setSilentMode(true);
     const std::string filename = "input/day16.txt";
     int errorRate;
     int64_t finalProduct;

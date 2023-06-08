@@ -13,6 +13,8 @@
 #include <list>
 #include <string>
 
+#include "logger.hpp"
+
 int main(int argc, char *argv[])
 {
     // Informs test-listener about testresults
@@ -25,6 +27,8 @@ int main(int argc, char *argv[])
     // Register listener for per-test progress output
     CPPUNIT_NS::BriefTestProgressListener progress;
     testresult.addListener(&progress);
+
+    Logger::setSilentMode(true);
 
     // Insert test-suite at test-runner by registry
     CPPUNIT_NS::TestRunner testrunner;

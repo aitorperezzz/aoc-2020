@@ -19,7 +19,6 @@ CPPUNIT_TEST_SUITE_REGISTRATION(TestDay15);
 
 void TestDay15::test(void)
 {
-    Logger::setSilentMode(true);
     std::vector<int> numbers;
     int iterations;
     int result;

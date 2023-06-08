@@ -21,7 +21,6 @@ CPPUNIT_TEST_SUITE_REGISTRATION(TestDay14);
 
 void TestDay14::testFile(void)
 {
-    Logger::setSilentMode(true);
     uint64_t result;
     std::string filename;
 
@@ -38,7 +37,6 @@ void TestDay14::testFile(void)
 
 void TestDay14::inputFile(void)
 {
-    Logger::setSilentMode(true);
     std::string filename = "input/day14.txt";
     uint64_t result;
 

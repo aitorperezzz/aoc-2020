@@ -21,7 +21,6 @@ CPPUNIT_TEST_SUITE_REGISTRATION(TestDay11);
 
 void TestDay11::testFile(void)
 {
-    Logger::setSilentMode(true);
     std::string filename = "input/day11_test.txt";
     unsigned int result1, result2;
     CPPUNIT_ASSERT_EQUAL(Ok, day11::execute(filename, result1, result2));
@@ -31,7 +30,6 @@ void TestDay11::testFile(void)
 
 void TestDay11::inputFile(void)
 {
-    Logger::setSilentMode(true);
     std::string filename = "input/day11.txt";
     unsigned int result1, result2;
     CPPUNIT_ASSERT_EQUAL(Ok, day11::execute(filename, result1, result2));
