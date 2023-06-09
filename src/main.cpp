@@ -16,6 +16,7 @@
 #include "day16.hpp"
 #include "day17.hpp"
 #include "day18.hpp"
+#include "day19.hpp"
 #include "logger.hpp"
 
 int main(int argc, char *argv[])
@@ -49,12 +50,12 @@ int main(int argc, char *argv[])
     {
     case 1: {
         int result;
-        if (Day01::executePartOne("./input/day01.txt", result) != Ok)
+        if (day01::executePartOne("./input/day01.txt", result) != Ok)
         {
             return -1;
         }
 
-        if (Day01::executePartTwo("./input/day01.txt", result) != Ok)
+        if (day01::executePartTwo("./input/day01.txt", result) != Ok)
         {
             return -1;
         }
@@ -202,6 +203,14 @@ int main(int argc, char *argv[])
     case 18: {
         int64_t result1, result2;
         if (day18::execute("input/day18.txt", result1, result2) != Ok)
+        {
+            return -1;
+        }
+        break;
+    }
+    case 19: {
+        int result;
+        if (day19::execute("input/day19_test.txt", result) != Ok)
         {
             return -1;
         }
