@@ -208,14 +208,6 @@ int main(int argc, char *argv[])
         }
         break;
     }
-    case 19: {
-        int result;
-        if (day19::execute("input/day19_test.txt", result) != Ok)
-        {
-            return -1;
-        }
-        break;
-    }
     default:
         Logger::log("Day is not supported: " + std::to_string(day), ERROR);
         return -1;
