@@ -46,8 +46,8 @@ void TestDay16::testInput(void)
 {
     const std::string filename = "input/day16.txt";
     int errorRate;
-    int64_t finalProduct;
+    long finalProduct;
     CPPUNIT_ASSERT_EQUAL(Ok, day16::execute(filename, errorRate, finalProduct));
     CPPUNIT_ASSERT_EQUAL(22977, errorRate);
-    CPPUNIT_ASSERT_EQUAL(998358379943, finalProduct);
+    CPPUNIT_ASSERT_EQUAL(static_cast<long>(998358379943), finalProduct);
 }

@@ -189,7 +189,7 @@ void Document::mergeRules(
         {
             std::string currGlobalRule = globalRules[globalRuleIndex][rule];
             bool found = false;
-            for (const auto ticketRule : ticketRules[globalRuleIndex])
+            for (const auto &ticketRule : ticketRules[globalRuleIndex])
             {
                 if (currGlobalRule == ticketRule)
                 {
@@ -289,7 +289,7 @@ std::vector<std::string> Document::extractCorrectOrder()
 }
 
 ErrorCode execute(const std::string &filename, int &scanningErrorRate,
-                  int64_t &finalProduct)
+                  long &finalProduct)
 {
     // Create the reference document
     auto document = Document(filename);
@@ -310,12 +310,12 @@ ErrorCode execute(const std::string &filename, int &scanningErrorRate,
     Logger::log("Correct order extracted: " + message.str(), INFO);
 
     // Find the product requested for part 2
-    finalProduct = static_cast<int64_t>(1);
+    finalProduct = static_cast<long>(1);
     for (size_t index = 0; index < correctOrder.size(); index++)
     {
         if (correctOrder[index].find("departure") != std::string::npos)
         {
-            finalProduct *= static_cast<int64_t>(document.myTicket[index]);
+            finalProduct *= static_cast<long>(document.myTicket[index]);
         }
     }
     Logger::log("Product: " + std::to_string(finalProduct), INFO);

@@ -37,11 +37,11 @@ $(TEST_TARGET): $(TEST_OBJECTS)
 
 -include $(DEPENDS)
 
-%.o: %.cpp Makefile
-	$(CC) $(CCFLAGS) -MMD -MP -c $< -o $@
-
 test/%.o: test/%.cpp Makefile
 	$(CC) $(TEST_CCFLAGS) -MMD -MP -c $< -o $@
+
+%.o: %.cpp Makefile
+	$(CC) $(CCFLAGS) -MMD -MP -c $< -o $@
 
 clean:
 	-rm -f $(OBJECTS) $(DEPENDS) $(TARGET)

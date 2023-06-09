@@ -1,4 +1,3 @@
-#include <bits/stdc++.h>
 #include <bitset>
 #include <cmath>
 #include <iostream>
@@ -25,13 +24,13 @@ Program::Program(const std::vector<std::string> &lines)
 
             std::string addressString =
                 line.substr(firstBracket + 1, secondBracket - firstBracket - 1);
-            uint64_t address = std::stoull(addressString);
+            unsigned long address = std::stoul(addressString);
 
             // Grab the = sign
             size_t equalSign = line.find('=');
             equalSign += 2;
             std::string valueString = line.substr(equalSign);
-            uint64_t value = std::stoull(valueString);
+            unsigned long value = std::stoul(valueString);
 
             // Create instruction
             StoreInstruction instruction;
@@ -151,14 +150,15 @@ ErrorCode StoreInstruction::execute(const Version version,
         }
 
         // Update the value at the requested address
-        program.memory[address] = static_cast<uint64_t>(auxValue.to_ullong());
+        program.memory[address] =
+            static_cast<unsigned long>(auxValue.to_ulong());
         return ErrorCode::Ok;
     }
     else
     {
         // First parse the values in the mask that are fixed and get a vector
         // with all the positions on which the mask is floating
-        uint64_t auxAddress = address;
+        unsigned long auxAddress = address;
         std::deque<size_t> floatingIndices;
         for (size_t i = 0; i < BIT_LENGTH; i++)
         {
@@ -182,7 +182,7 @@ ErrorCode StoreInstruction::execute(const Version version,
 }
 
 ErrorCode StoreInstruction::applyPossibilities(
-    const uint64_t address, const uint64_t value,
+    const unsigned long address, const unsigned long value,
     const std::deque<size_t> &floatingIndices, Program &program) const
 {
     if (floatingIndices.size() == 0)
@@ -193,8 +193,8 @@ ErrorCode StoreInstruction::applyPossibilities(
     else
     {
         // Apply the possibilities in the first floating index
-        uint64_t address1 = address | (1ull << floatingIndices.front());
-        uint64_t address2 = address & ~(1ull << floatingIndices.front());
+        unsigned long address1 = address | (1ull << floatingIndices.front());
+        unsigned long address2 = address & ~(1ull << floatingIndices.front());
 
         // Remove from the deque the first element, and then call recursively
         auto auxFloatingIndices = floatingIndices;
@@ -214,7 +214,7 @@ void StoreInstruction::log() const
 }
 
 ErrorCode execute(const std::string &filename, const Version version,
-                  uint64_t &result)
+                  unsigned long &result)
 {
     // Load input
     std::vector<std::string> lines;

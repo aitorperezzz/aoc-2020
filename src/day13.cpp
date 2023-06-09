@@ -71,7 +71,7 @@ int Problem::computeEarliestBusTimesWaitTime()
     }
 }
 
-ErrorCode execute(const std::string &filename, int &result1, int64_t &result2)
+ErrorCode execute(const std::string &filename, int &result1, long &result2)
 {
     // Load input
     std::vector<std::string> lines;
@@ -95,12 +95,12 @@ ErrorCode execute(const std::string &filename, int &result1, int64_t &result2)
     return ErrorCode::Ok;
 }
 
-int64_t multiplicativeInverse(const int64_t a, const int64_t n)
+long multiplicativeInverse(const long a, const long n)
 {
-    int64_t t = 0, newt = 1;
-    int64_t r = n, newr = a;
+    long t = 0, newt = 1;
+    long r = n, newr = a;
 
-    int64_t quotient, auxt, auxr;
+    long quotient, auxt, auxr;
     while (newr != 0)
     {
         quotient = r / newr;
@@ -123,18 +123,18 @@ int64_t multiplicativeInverse(const int64_t a, const int64_t n)
     return t;
 }
 
-int64_t solveChineseTheorem(const std::vector<int64_t> &results,
-                            const std::vector<int64_t> &divisors)
+long solveChineseTheorem(const std::vector<long> &results,
+                         const std::vector<long> &divisors)
 {
     // Compute the product of all divisors as an auxiliary variable
-    int64_t Nproduct =
+    long Nproduct =
         std::accumulate(divisors.cbegin(), divisors.cend(),
-                        static_cast<int64_t>(1), std::multiplies<int64_t>());
+                        static_cast<long>(1), std::multiplies<long>());
 
     // Compute the multiplicative modular inverses of each of the equations, and
     // add to the solution
-    int64_t solution = 0;
-    int64_t ni;
+    long solution = 0;
+    long ni;
     for (size_t i = 0; i < divisors.size(); i++)
     {
         ni = Nproduct / divisors[i];
@@ -145,18 +145,18 @@ int64_t solveChineseTheorem(const std::vector<int64_t> &results,
     return (solution % Nproduct + Nproduct) % Nproduct;
 }
 
-int64_t solvePartTwo(const std::vector<int> &busIds)
+long solvePartTwo(const std::vector<int> &busIds)
 {
     // Grab all the well defined bus ids and keep the "results" that will serve
     // the chinese theorem, on the fly. Convert to bigger integers
-    std::vector<int64_t> fixedResults;
-    std::vector<int64_t> fixedDivisors;
+    std::vector<long> fixedResults;
+    std::vector<long> fixedDivisors;
     for (size_t i = 0; i < busIds.size(); i++)
     {
         if (busIds[i] != -1)
         {
-            fixedResults.push_back(static_cast<int64_t>(0 - i));
-            fixedDivisors.push_back(static_cast<int64_t>(busIds[i]));
+            fixedResults.push_back(static_cast<long>(0 - i));
+            fixedDivisors.push_back(static_cast<long>(busIds[i]));
         }
     }
 

@@ -32,52 +32,40 @@ CPPUNIT_TEST_SUITE_REGISTRATION(TestDay18);
 void TestDay18::testBasicMath(void)
 {
     CPPUNIT_ASSERT_EQUAL(
-        static_cast<int64_t>(71),
-        std::stol(day18::compute(operation1, day18::Math::Basic)));
+        71l, std::stol(day18::compute(operation1, day18::Math::Basic)));
     CPPUNIT_ASSERT_EQUAL(
-        static_cast<int64_t>(51),
-        std::stol(day18::compute(operation2, day18::Math::Basic)));
+        51l, std::stol(day18::compute(operation2, day18::Math::Basic)));
     CPPUNIT_ASSERT_EQUAL(
-        static_cast<int64_t>(26),
-        std::stol(day18::compute(operation3, day18::Math::Basic)));
+        26l, std::stol(day18::compute(operation3, day18::Math::Basic)));
     CPPUNIT_ASSERT_EQUAL(
-        static_cast<int64_t>(437),
-        std::stol(day18::compute(operation4, day18::Math::Basic)));
+        437l, std::stol(day18::compute(operation4, day18::Math::Basic)));
     CPPUNIT_ASSERT_EQUAL(
-        static_cast<int64_t>(12240),
-        std::stol(day18::compute(operation5, day18::Math::Basic)));
+        12240l, std::stol(day18::compute(operation5, day18::Math::Basic)));
     CPPUNIT_ASSERT_EQUAL(
-        static_cast<int64_t>(13632),
-        std::stol(day18::compute(operation6, day18::Math::Basic)));
+        13632l, std::stol(day18::compute(operation6, day18::Math::Basic)));
 }
 
 void TestDay18::testAdvancedMath(void)
 {
     CPPUNIT_ASSERT_EQUAL(
-        static_cast<int64_t>(231),
-        std::stol(day18::compute(operation1, day18::Math::Advanced)));
+        231l, std::stol(day18::compute(operation1, day18::Math::Advanced)));
     CPPUNIT_ASSERT_EQUAL(
-        static_cast<int64_t>(51),
-        std::stol(day18::compute(operation2, day18::Math::Advanced)));
+        51l, std::stol(day18::compute(operation2, day18::Math::Advanced)));
     CPPUNIT_ASSERT_EQUAL(
-        static_cast<int64_t>(46),
-        std::stol(day18::compute(operation3, day18::Math::Advanced)));
+        46l, std::stol(day18::compute(operation3, day18::Math::Advanced)));
     CPPUNIT_ASSERT_EQUAL(
-        static_cast<int64_t>(1445),
-        std::stol(day18::compute(operation4, day18::Math::Advanced)));
+        1445l, std::stol(day18::compute(operation4, day18::Math::Advanced)));
     CPPUNIT_ASSERT_EQUAL(
-        static_cast<int64_t>(669060),
-        std::stol(day18::compute(operation5, day18::Math::Advanced)));
+        669060l, std::stol(day18::compute(operation5, day18::Math::Advanced)));
     CPPUNIT_ASSERT_EQUAL(
-        static_cast<int64_t>(23340),
-        std::stol(day18::compute(operation6, day18::Math::Advanced)));
+        23340l, std::stol(day18::compute(operation6, day18::Math::Advanced)));
 }
 
 void TestDay18::inputFile(void)
 {
     const std::string filename = "input/day18.txt";
-    int64_t result1, result2;
+    long result1, result2;
     CPPUNIT_ASSERT_EQUAL(Ok, day18::execute(filename, result1, result2));
-    CPPUNIT_ASSERT_EQUAL(static_cast<int64_t>(11297104473091), result1);
-    CPPUNIT_ASSERT_EQUAL(static_cast<int64_t>(185348874183674), result2);
+    CPPUNIT_ASSERT_EQUAL(11297104473091l, result1);
+    CPPUNIT_ASSERT_EQUAL(185348874183674l, result2);
 }
