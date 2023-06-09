@@ -91,7 +91,7 @@ std::string computeWithNoParenthesis(const std::string operation,
             }
         }
         // Create the number to the left of the operator
-        int64_t firstNumber =
+        long firstNumber =
             std::stol(currentOperation.substr(begin, operatorPos - begin));
 
         // Get the index of the end of the number closest to the operator, to
@@ -110,10 +110,10 @@ std::string computeWithNoParenthesis(const std::string operation,
             }
         }
         // Convert the section of string to a number
-        int64_t secondNumber = std::stol(
+        long secondNumber = std::stol(
             currentOperation.substr(operatorPos + 1, end - operatorPos));
 
-        int64_t result;
+        long result;
         if (currentOperation[operatorPos] == '+')
         {
             result = firstNumber + secondNumber;
@@ -170,8 +170,7 @@ std::string compute(const std::string &operation, const Math math)
     return computeWithNoParenthesis(trimmedOperation, math);
 }
 
-ErrorCode execute(const std::string &filename, int64_t &result1,
-                  int64_t &result2)
+ErrorCode execute(const std::string &filename, long &result1, long &result2)
 {
     // Load input
     std::vector<std::string> input;
@@ -182,7 +181,7 @@ ErrorCode execute(const std::string &filename, int64_t &result1,
     }
 
     // Compute the result of each line and sum all of them together
-    int64_t totalResultBasic = 0, totalResultAdvanced = 0;
+    long totalResultBasic = 0, totalResultAdvanced = 0;
     for (auto &line : input)
     {
         totalResultBasic += std::stol(compute(line, Math::Basic));

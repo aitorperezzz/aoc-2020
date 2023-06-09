@@ -65,6 +65,6 @@ private:
 
 /// @brief Returns the results for the day
 ErrorCode execute(const std::string &filename, int &scanningErrorRate,
-                  int64_t &finalProduct);
+                  long &finalProduct);
 
 } // namespace day16

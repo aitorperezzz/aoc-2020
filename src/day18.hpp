@@ -18,7 +18,6 @@ enum Math
 std::string compute(const std::string &operation, const Math math);
 
 /// @brief Returns the result of a problem given inside a file
-ErrorCode execute(const std::string &filename, int64_t &result1,
-                  int64_t &result2);
+ErrorCode execute(const std::string &filename, long &result1, long &result2);
 
 } // namespace day18

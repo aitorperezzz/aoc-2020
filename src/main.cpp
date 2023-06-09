@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
     }
     case 13: {
         int result1;
-        int64_t result2;
+        long result2;
         if (day13::execute("input/day13.txt", result1, result2) != Ok)
         {
             return -1;
@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
         break;
     }
     case 14: {
-        uint64_t result;
+        unsigned long result;
         if (day14::execute("input/day14.txt", day14::Version::ONE, result) !=
             Ok)
         {
@@ -185,7 +185,7 @@ int main(int argc, char *argv[])
     }
     case 16: {
         int errorRate;
-        int64_t finalProduct;
+        long finalProduct;
         if (day16::execute("input/day16.txt", errorRate, finalProduct) != Ok)
         {
             return -1;
@@ -201,7 +201,7 @@ int main(int argc, char *argv[])
         break;
     }
     case 18: {
-        int64_t result1, result2;
+        long result1, result2;
         if (day18::execute("input/day18.txt", result1, result2) != Ok)
         {
             return -1;
